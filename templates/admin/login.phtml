@@ -1,0 +1,35 @@
+<?php $title = 'Admin Login'; ?>
+<?php require_once __DIR__ . '/../partials/auth_header.phtml'; ?>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Welcome Back!</h1>
+            <p>Sign in to manage the system</p>
+        </div>
+
+        <?php
+        // Display and clear the status message from the session
+        if (isset($_SESSION['status'])) {
+            $status = $_SESSION['status'];
+            echo "<div class='status-message {$status['type']}'>" . htmlspecialchars($status['message']) . "</div>";
+            unset($_SESSION['status']);
+        }
+        ?>
+
+        <form action="login.php" method="post">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autofocus>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="register.php">Register here</a></p>
+        </div>
+    </div>
+</div>
+
+<?php require_once __DIR__ . '/../partials/auth_footer.phtml'; ?>

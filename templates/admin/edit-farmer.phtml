@@ -1,0 +1,36 @@
+<?php require_once __DIR__ . '/../partials/header.phtml'; ?>
+
+<?php
+// Display and clear the status message from the session
+if (isset($_SESSION['status'])) {
+    $status = $_SESSION['status'];
+    echo "<div class='status-message {$status['type']}'>" . htmlspecialchars($status['message']) . "</div>";
+    unset($_SESSION['status']);
+}
+?>
+
+<div class="form-section">
+    <h2>Edit Farmer: <?php echo htmlspecialchars($farmer['names']); ?></h2>
+    <form action="edit-farmer.php?id=<?php echo $farmer['id']; ?>" method="post">
+        <label for="names">Farmer's Name:</label>
+        <input type="text" id="names" name="names" value="<?php echo htmlspecialchars($farmer['names']); ?>" required>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($farmer['phone_number']); ?>" required>
+
+        <label for="language">Preferred Language:</label>
+        <select id="language" name="language">
+            <option value="en" <?php echo ($farmer['preferred_language'] === 'en') ? 'selected' : ''; ?>>
+                English
+            </option>
+            <option value="ruk" <?php echo ($farmer['preferred_language'] === 'ruk') ? 'selected' : ''; ?>>
+                Rukiga
+            </option>
+        </select>
+
+        <button type="submit">Update Farmer</button>
+        <a href="dashboard.php" class="cancel-btn">Cancel</a>
+    </form>
+</div>
+
+<?php require_once __DIR__ . '/../partials/footer.phtml'; ?>

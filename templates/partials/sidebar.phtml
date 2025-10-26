@@ -1,0 +1,27 @@
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h2>SMS Price Alerts</h2>
+    </div>
+    <div class="sidebar-user">
+        <div class="profile-pic">
+            <span><?php echo strtoupper(substr($_SESSION['username'], 0, 1)); ?></span>
+        </div>
+        <div class="profile-info">
+            <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+            <small>Administrator</small>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <ul>
+            <li><a href="dashboard.php?page=home" class="<?php echo ($page === 'home') ? 'active' : ''; ?>">Dashboard</a></li>
+            <li><a href="dashboard.php?page=prices" class="<?php echo ($page === 'prices') ? 'active' : ''; ?>">Market Prices</a></li>
+            <li><a href="dashboard.php?page=add-price" class="<?php echo ($page === 'add-price') ? 'active' : ''; ?>">Add Price</a></li>
+            <li><a href="dashboard.php?page=farmers" class="<?php echo ($page === 'farmers') ? 'active' : ''; ?>">Farmers List</a></li>
+            <li><a href="dashboard.php?page=add-farmer" class="<?php echo ($page === 'add-farmer') ? 'active' : ''; ?>">Register Farmer</a></li>
+            <li><a href="dashboard.php?page=logs" class="<?php echo ($page === 'logs') ? 'active' : ''; ?>">Broadcast Logs</a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="logout.php">Logout</a>
+    </div>
+</aside>

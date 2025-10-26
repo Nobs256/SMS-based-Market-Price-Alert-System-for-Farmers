@@ -1,0 +1,17 @@
+<div class="form-section">
+    <form action="dashboard.php?page=add-price" method="post">
+        <label for="market_name">Market:</label>
+        <select id="market_name" name="market_name" required>
+            <option value="">-- Select a Market --</option>
+            <option value="Kampala">Kampala</option>
+            <option value="Mbarara">Mbarara</option>
+            <option value="Kabale">Kabale</option>
+            <option value="Rubanda">Rubanda</option>
+        </select>
+
+        <label for="price">Price (per basin in UGX):</label>
+        <input type="number" id="price" name="price" step="50" min="0" placeholder="e.g., 1500" required>
+
+        <button type="submit" name="add_price">Add Price & Broadcast</button>
+    </form>
+</div>

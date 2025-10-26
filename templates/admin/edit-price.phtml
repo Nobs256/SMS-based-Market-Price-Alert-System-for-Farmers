@@ -1,0 +1,37 @@
+<?php require_once __DIR__ . '/../partials/header.phtml'; ?>
+
+<div class="page-header">
+    <h1>Edit Market Price</h1>
+</div>
+
+<?php
+// Display and clear the status message from the session
+if (isset($_SESSION['status'])) {
+    $status = $_SESSION['status'];
+    echo "<div class='status-message {$status['type']}'>" . htmlspecialchars($status['message']) . "</div>";
+    unset($_SESSION['status']);
+}
+?>
+
+<div class="form-section">
+    <form action="edit-price.php?id=<?php echo $priceEntry['id']; ?>" method="post">
+        <label for="market_name">Market:</label>
+        <select id="market_name" name="market_name" required>
+            <option value="Kampala" <?php echo ($priceEntry['market_name'] === 'Kampala') ? 'selected' : ''; ?>>Kampala</option>
+            <option value="Mbarara" <?php echo ($priceEntry['market_name'] === 'Mbarara') ? 'selected' : ''; ?>>Mbarara</option>
+            <option value="Kabale" <?php echo ($priceEntry['market_name'] === 'Kabale') ? 'selected' : ''; ?>>Kabale</option>
+            <option value="Rubanda" <?php echo ($priceEntry['market_name'] === 'Rubanda') ? 'selected' : ''; ?>>Rubanda</option>
+        </select>
+
+        <label for="price">Price (per basin in UGX):</label>
+        <input type="number" id="price" name="price" step="50" min="0" value="<?php echo htmlspecialchars($priceEntry['price']); ?>" required>
+
+        <label for="price_date">Price Date:</label>
+        <input type="date" id="price_date" name="price_date" value="<?php echo htmlspecialchars($priceEntry['price_date']); ?>" required>
+
+        <button type="submit">Update Price</button>
+        <a href="dashboard.php?page=prices" class="cancel-btn">Cancel</a>
+    </form>
+</div>
+
+<?php require_once __DIR__ . '/../partials/footer.phtml'; ?>

@@ -1,0 +1,29 @@
+CREATE TABLE `farmers` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `names` VARCHAR(50) NOT NULL,
+  `phone_number` VARCHAR(20) NOT NULL UNIQUE,
+  `preferred_language` VARCHAR(10) DEFAULT 'en',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `prices` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `market_name` VARCHAR(50) NOT NULL,
+  `price` DECIMAL(10, 2) NOT NULL,
+  `price_date` DATE NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `sms_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `message` TEXT NOT NULL,
+  `status` VARCHAR(50) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `admins` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(50) NOT NULL UNIQUE,
+  `password_hash` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
