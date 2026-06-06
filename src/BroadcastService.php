@@ -84,12 +84,20 @@ class BroadcastService
     private function formatMessageForLanguage(string $lang, array $prices): string
     {
         $header = ($lang === 'ruk')
-            ? "Omuhendo gwe emondi erizoba (buli bafu):"
-            : "Today's Irish Potato Prices (per basin):";
+            ? "EMIHENDO Y'EMONDI:"
+            : "IRISH POTATO PRICES:";
 
         $messageParts = [$header];
         foreach ($prices as $priceInfo) {
-            $messageParts[] = strtoupper($priceInfo['market_name']) . ' - ' . number_format($priceInfo['price']) . ' UGX';
+            $marketName = strtoupper($priceInfo['market_name']);
+            $kgPrice = number_format($priceInfo['price_per_kg']);
+            $sackPrice = number_format($priceInfo['price_per_sack']);
+
+            if ($lang === 'ruk') {
+                $messageParts[] = "{$marketName}: {$kgPrice} buri kilo, {$sackPrice} buli gutiya";
+            } else {
+                $messageParts[] = "{$marketName}: {$kgPrice}/kg, {$sackPrice}/sack";
+            }
         }
 
         return implode("\n", $messageParts);

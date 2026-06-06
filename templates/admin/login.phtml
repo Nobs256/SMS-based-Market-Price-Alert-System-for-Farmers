@@ -1,11 +1,56 @@
 <?php $title = 'Admin Login'; ?>
 <?php require_once __DIR__ . '/../partials/auth_header.phtml'; ?>
 
+<style>
+    body {
+        background-color: #f4f7f6;
+        margin: 0;
+        overflow-x: hidden;
+    }
+    .auth-bg-curve {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        width: 200%;
+        height: 50vh;
+        background-color: #16A085;
+        border-radius: 0 0 50% 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+    }
+    .auth-container {
+        position: relative;
+        z-index: 1;
+    }
+    .auth-bg-text {
+        position: fixed;
+        bottom: 10vh;
+        left: 0;
+        width: 100%;
+        font-size: 8vw;
+        font-weight: 900;
+        color: #16A085;
+        white-space: nowrap;
+        z-index: -2;
+        pointer-events: none;
+        user-select: none;
+        animation: slideText 10s linear infinite;
+    }
+    @keyframes slideText {
+        from { transform: translateX(100%); }
+        to { transform: translateX(-100%); }
+    }
+</style>
+
+<div class="auth-bg-text">SMS MARKET PRICE ALERT SYSTEM</div>
+
+<div class="auth-bg-curve"></div>
+
 <div class="auth-container">
     <div class="auth-card">
         <div class="auth-header">
-            <h1>Welcome Back!</h1>
-            <p>Sign in to manage the system</p>
+            <h1>Welcome to the Market Price Alert System</h1>
+            <p>Enter your login and password to sign in</p>
         </div>
 
         <?php

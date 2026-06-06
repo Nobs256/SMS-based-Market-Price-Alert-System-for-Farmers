@@ -9,7 +9,8 @@ CREATE TABLE `farmers` (
 CREATE TABLE `prices` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `market_name` VARCHAR(50) NOT NULL,
-  `price` DECIMAL(10, 2) NOT NULL,
+  `price_per_kg` DECIMAL(10, 2) NOT NULL,
+  `price_per_sack` DECIMAL(10, 2) NOT NULL,
   `price_date` DATE NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

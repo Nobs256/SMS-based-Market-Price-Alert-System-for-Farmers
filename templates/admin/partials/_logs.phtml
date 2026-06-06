@@ -1,10 +1,18 @@
+<div class="section-header">
+    <h2>System Broadcast Logs</h2>
+    <div class="export-buttons">
+        <a href="export-logs-pdf.php" class="export-btn" target="_blank">Export PDF</a>
+        <a href="export-logs-csv.php" class="export-btn">Export CSV</a>
+    </div>
+</div>
+
 <div class="data-section">
     <table class="data-table">
         <thead>
             <tr>
                 <th>Date & Time</th>
                 <th>Status</th>
-                <th>Details</th>
+                <th style="width: 60%;">Details</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +27,7 @@
                         <td>
                             <span class="status-badge <?php echo htmlspecialchars($log['status']); ?>"><?php echo ucfirst(htmlspecialchars($log['status'])); ?></span>
                         </td>
-                        <td><?php echo htmlspecialchars($log['message']); ?></td>
+                        <td style="word-break: break-word;"><?php echo htmlspecialchars($log['message']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

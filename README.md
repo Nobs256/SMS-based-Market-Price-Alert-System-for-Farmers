@@ -14,6 +14,7 @@ The goal is to bridge the information gap in the agricultural value chain. By le
 *   **Farmer Registration:** Admins can register farmers by adding their phone numbers and preferred language.
 *   **Price Data Management:** Admins can input and update daily market prices for Irish potatoes from various regional markets.
 *   **SMS Broadcasts:** A mechanism to send customized price alerts to all registered farmers. This can be triggered manually by an admin or run automatically on a schedule.
+*   **SMS Broadcasts:** A mechanism to send detailed price alerts (Price per Kg and Price per Sack) to all registered farmers.
 *   **Multi-language Support:** SMS templates can be created in different languages (e.g., English, Rukiga) to ensure the information is accessible to all farmers.
 *   **Logging:** The system keeps a log of all sent SMS broadcasts for tracking and auditing.
 *   **Data Export:** Export the list of registered farmers to CSV and PDF formats.
@@ -148,6 +149,7 @@ class Config {
 
 **Step 4: Set Up the Web Server**
 
+...
 Configure your web server (Apache/Nginx) to use `public/` as the document root. This is a crucial security measure to prevent direct access to your source code and configuration files.
 
 **Step 5: Set Up the Cron Job**
@@ -165,12 +167,14 @@ To automate the SMS alerts, set up a cron job on your server to execute the `cro
 
 This is the main control center. It will have two primary sections:
 *   **Price Entry Form:** A form to submit the price for a specific market (e.g., a dropdown for Market and a text field for Price). This form will post to a script that uses `PriceService.php` to save the data.
+*   **Price Entry Form:** A form to submit prices for a specific market. It includes fields for "Market Name", "Price per Kg", and "Price per Sack". This form posts to a script that uses `PriceService.php` to save the data.
 *   **Farmer Management:** A form to add a new farmer's phone number and preferred language. This will use `FarmerService.php`. It will also list all currently registered farmers.
 
 ### 2. The Services (`src/` directory)
 
 *   **`FarmerService.php`:** Contains methods like `addFarmer(string $phone, string $lang)` and `getAllFarmers()`. These methods will interact with the `farmers` table in the database.
 *   **`PriceService.php`:** Contains methods like `addPrice(string $market, float $price)` and `getLatestPrices()`. The `getLatestPrices()` method will be crucial for composing the SMS message.
+*   **`PriceService.php`:** Contains methods like `addPrice(string $market, float $priceKg, float $priceSack)` and `getLatestPrices()`. The `getLatestPrices()` method is used to compose the SMS message.
 *   **`SmsService.php`:** This class will be adapted for bulk sending. The Ego SMS API likely has a different endpoint or payload structure for sending messages to multiple recipients in a single API call. The `sendBulk(array $recipients, string $message)` method would be ideal.
 
 ### 3. The Broadcast Script (`scripts/cron_broadcast.php`)
@@ -178,6 +182,7 @@ This is the main control center. It will have two primary sections:
 This script is the engine of the system. It will:
 1.  Instantiate `PriceService` and call `getLatestPrices()` to get the data.
 2.  Format the price data into a human-readable string. Example: `Irish Potato Prices: KLA - 1500/kg, MBA - 1200/kg.`
+2.  Format the price data into a structured string. Example: `IRISH POTATO PRICES: [Market Name]: [Price]/kg, [Price]/sack.`
 3.  Instantiate `FarmerService` and call `getAllFarmers()` to get a list of all phone numbers.
 4.  Instantiate `SmsService` and call the bulk sending method with the list of numbers and the formatted message.
 5.  Log the result of the broadcast (success or failure) into the `sms_logs` table.

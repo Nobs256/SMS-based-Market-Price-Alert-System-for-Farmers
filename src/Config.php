@@ -9,8 +9,8 @@ class Config {
     public const DB_PASS = '';
 
     // Ego SMS API Credentials (for Plain API)
-    public const EGO_SMS_USERNAME = 'your user name';
-    public const EGO_SMS_PASSWORD = 'yourpassword';
-    public const EGO_SMS_SENDER_ID = 'sender id';
-    public const EGO_SMS_API_ENDPOINT = 'ego sms end point';
+    public const EGO_SMS_USERNAME = 'nobs';
+    public const EGO_SMS_PASSWORD = 'nobs.is.coding';
+    public const EGO_SMS_SENDER_ID = 'MarketInfo';
+    public const EGO_SMS_API_ENDPOINT = 'https://www.egosms.co/api/v1';
 }

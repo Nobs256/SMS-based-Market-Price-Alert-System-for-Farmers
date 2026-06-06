@@ -17,18 +17,20 @@ class PriceService
      * Adds a new market price entry to the database.
      *
      * @param string $marketName The name of the market (e.g., "Kabale", "Kampala").
-     * @param float $price The price of Irish potatoes in that market.
+     * @param float $priceKg The price per kilogram.
+     * @param float $priceSack The price per sack.
      * @param string $priceDate The date for which the price is recorded (format YYYY-MM-DD).
      * @return bool True on success, false on failure.
      */
-    public function addPrice(string $marketName, float $price, string $priceDate): bool
+    public function addPrice(string $marketName, float $priceKg, float $priceSack, string $priceDate): bool
     {
-        $sql = "INSERT INTO prices (market_name, price, price_date) VALUES (:market_name, :price, :price_date)";
+        $sql = "INSERT INTO prices (market_name, price_per_kg, price_per_sack, price_date) VALUES (:market_name, :price_kg, :price_sack, :price_date)";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':market_name' => $marketName,
-                ':price' => $price,
+                ':price_kg' => $priceKg,
+                ':price_sack' => $priceSack,
                 ':price_date' => $priceDate
             ]);
             return true;
@@ -47,7 +49,7 @@ class PriceService
     public function getLatestPrices(): array
     {
         // Subquery to find the maximum price_date for each market
-        $sql = "SELECT p1.market_name, p1.price, p1.price_date
+        $sql = "SELECT p1.id, p1.market_name, p1.price_per_kg, p1.price_per_sack, p1.price_date
                 FROM prices p1
                 JOIN (
                     SELECT market_name, MAX(price_date) AS max_price_date
@@ -66,7 +68,7 @@ class PriceService
      */
     public function getAllPrices(): array
     {
-        $sql = "SELECT id, market_name, price, price_date, created_at 
+        $sql = "SELECT id, market_name, price_per_kg, price_per_sack, price_date, created_at 
                 FROM prices 
                 ORDER BY price_date DESC, created_at DESC";
         $stmt = $this->pdo->query($sql);
@@ -77,35 +79,35 @@ class PriceService
      * Retrieves a single price entry by its ID.
      *
      * @param int $id The ID of the price entry.
-     * @return array|false The price data, or false if not found.
+     * @return array|false The price data as an associative array, or false if not found.
      */
     public function getPriceById(int $id): array|false
     {
-        $stmt = $this->pdo->prepare("SELECT id, market_name, price, price_date FROM prices WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT id, market_name, price_per_kg, price_per_sack, price_date FROM prices WHERE id = :id");
         $stmt->execute([':id' => $id]);
         return $stmt->fetch();
     }
 
     /**
-     * Updates an existing price entry.
+     * Updates an existing price entry in the database.
      *
-     * @param int $id The ID of the price to update.
+     * @param int $id The ID of the price entry to update.
      * @param string $marketName The new market name.
-     * @param float $price The new price.
-     * @param string $priceDate The new date for the price.
+     * @param float $priceKg The new price per kg.
+     * @param float $priceSack The new price per sack.
+     * @param string $priceDate The price date.
      * @return bool True on success, false on failure.
      */
-    public function updatePrice(int $id, string $marketName, float $price, string $priceDate): bool
+    public function updatePrice(int $id, string $marketName, float $priceKg, float $priceSack, string $priceDate): bool
     {
-        $sql = "UPDATE prices 
-                SET market_name = :market_name, price = :price, price_date = :price_date 
-                WHERE id = :id";
+        $sql = "UPDATE prices SET market_name = :market_name, price_per_kg = :price_kg, price_per_sack = :price_sack, price_date = :price_date WHERE id = :id";
         try {
             $stmt = $this->pdo->prepare($sql);
             return $stmt->execute([
                 ':id' => $id,
                 ':market_name' => $marketName,
-                ':price' => $price,
+                ':price_kg' => $priceKg,
+                ':price_sack' => $priceSack,
                 ':price_date' => $priceDate
             ]);
         } catch (\PDOException $e) {
@@ -115,7 +117,7 @@ class PriceService
     }
 
     /**
-     * Deletes a price entry from the database.
+     * Deletes a price entry from the database by its ID.
      *
      * @param int $id The ID of the price to delete.
      * @return bool True on success, false on failure.
@@ -131,4 +133,5 @@ class PriceService
             return false;
         }
     }
+
 }

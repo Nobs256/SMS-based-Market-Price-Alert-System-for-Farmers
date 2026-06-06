@@ -9,8 +9,11 @@
             <option value="Rubanda">Rubanda</option>
         </select>
 
-        <label for="price">Price (per basin in UGX):</label>
-        <input type="number" id="price" name="price" step="50" min="0" placeholder="e.g., 1500" required>
+        <label for="price">Price (per kilogram):</label>
+        <input type="number" id="price_per_kg" name="price_per_kg" step="50" min="0" placeholder="e.g., 1500" required>
+
+        <label for="price_per_sack">Price (per sack):</label>
+        <input type="number" id="price_per_sack" name="price_per_sack" step="500" min="0" placeholder="e.g., 180000" required>
 
         <button type="submit" name="add_price">Add Price & Broadcast</button>
     </form>

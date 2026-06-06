@@ -46,11 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif (isset($_POST['add_price'])) {
         $market = trim($_POST['market_name'] ?? '');
-        $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
+        $priceKg = filter_input(INPUT_POST, 'price_per_kg', FILTER_VALIDATE_FLOAT);
+        $priceSack = filter_input(INPUT_POST, 'price_per_sack', FILTER_VALIDATE_FLOAT);
         $date = date('Y-m-d');
 
-        if (!empty($market) && $price !== false && $price > 0) {
-            if ($priceService->addPrice($market, $price, $date)) {
+        if (!empty($market) && $priceKg !== false && $priceSack !== false && $priceKg > 0) {
+            if ($priceService->addPrice($market, $priceKg, $priceSack, $date)) {
                 $initialMessage = "Price for {$market} added successfully.";
 
                 // --- Trigger Automatic Broadcast ---
@@ -68,7 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['status'] = ['message' => 'Error: Market name and a valid price are required.', 'type' => 'error'];
         }
     } elseif (isset($_POST['delete_farmer'])) {
-        $farmerId = filter_input(INPUT_POST, 'farmer_id', FILTER_VALIDATE_INT);
+        $farmerId = filter_input(INPUT_POST, 'farmer_id', FILTER_VALIDATE_INT)
+                   ?: filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT)
+                   ?: filter_input(INPUT_GET, 'farmer_id', FILTER_VALIDATE_INT)
+                   ?: filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
         if ($farmerId && $farmerId > 0) {
             if ($farmerService->deleteFarmer($farmerId)) {
@@ -80,13 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['status'] = ['message' => 'Error: Invalid farmer ID.', 'type' => 'error'];
         }
     } elseif (isset($_POST['delete_price'])) {
-        $priceId = filter_input(INPUT_POST, 'price_id', FILTER_VALIDATE_INT);
-
+        $priceId = (int) ($_POST['price_id'] ?? $_GET['price_id'] ?? 0);
         if ($priceId && $priceId > 0) {
             if ($priceService->deletePrice($priceId)) {
-                $_SESSION['status'] = ['message' => 'Price entry deleted successfully.', 'type' => 'success'];
+                $_SESSION['status'] = ['message' => 'Price deleted successfully.', 'type' => 'success'];
             } else {
-                $_SESSION['status'] = ['message' => 'Error: Could not delete the price entry.', 'type' => 'error'];
+                $_SESSION['status'] = ['message' => 'Error: Could not delete the price.', 'type' => 'error'];
             }
         } else {
             $_SESSION['status'] = ['message' => 'Error: Invalid price ID.', 'type' => 'error'];

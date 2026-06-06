@@ -1,11 +1,6 @@
 <?php require_once __DIR__ . '/../partials/header.phtml'; ?>
 
-<div class="page-header">
-    <h1>Edit Market Price</h1>
-</div>
-
 <?php
-// Display and clear the status message from the session
 if (isset($_SESSION['status'])) {
     $status = $_SESSION['status'];
     echo "<div class='status-message {$status['type']}'>" . htmlspecialchars($status['message']) . "</div>";
@@ -14,22 +9,22 @@ if (isset($_SESSION['status'])) {
 ?>
 
 <div class="form-section">
-    <form action="edit-price.php?id=<?php echo $priceEntry['id']; ?>" method="post">
-        <label for="market_name">Market:</label>
-        <select id="market_name" name="market_name" required>
-            <option value="Kampala" <?php echo ($priceEntry['market_name'] === 'Kampala') ? 'selected' : ''; ?>>Kampala</option>
-            <option value="Mbarara" <?php echo ($priceEntry['market_name'] === 'Mbarara') ? 'selected' : ''; ?>>Mbarara</option>
-            <option value="Kabale" <?php echo ($priceEntry['market_name'] === 'Kabale') ? 'selected' : ''; ?>>Kabale</option>
-            <option value="Rubanda" <?php echo ($priceEntry['market_name'] === 'Rubanda') ? 'selected' : ''; ?>>Rubanda</option>
-        </select>
+    <h2>Edit Price Entry</h2>
+    <form action="edit-price.php" method="post">
+        <input type="hidden" name="price_id" value="<?php echo $price['id']; ?>">
+        <label for="market_name">Market Name:</label>
+        <input type="text" id="market_name" name="market_name" value="<?php echo htmlspecialchars($price['market_name']); ?>" required>
 
-        <label for="price">Price (per basin in UGX):</label>
-        <input type="number" id="price" name="price" step="50" min="0" value="<?php echo htmlspecialchars($priceEntry['price']); ?>" required>
+        <label for="price_per_kg">Price per Kg (UGX):</label>
+        <input type="number" id="price_per_kg" name="price_per_kg" step="0.01" value="<?php echo $price['price_per_kg']; ?>" required>
+
+        <label for="price_per_sack">Price per Sack (UGX):</label>
+        <input type="number" id="price_per_sack" name="price_per_sack" step="0.01" value="<?php echo $price['price_per_sack']; ?>" required>
 
         <label for="price_date">Price Date:</label>
-        <input type="date" id="price_date" name="price_date" value="<?php echo htmlspecialchars($priceEntry['price_date']); ?>" required>
+        <input type="date" id="price_date" name="price_date" value="<?php echo htmlspecialchars($price['price_date']); ?>" required>
 
-        <button type="submit">Update Price</button>
+        <button type="submit">Update Price & Broadcast</button>
         <a href="dashboard.php?page=prices" class="cancel-btn">Cancel</a>
     </form>
 </div>

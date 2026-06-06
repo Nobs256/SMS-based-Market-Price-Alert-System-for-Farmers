@@ -50,4 +50,16 @@ class LogService
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    /**
+     * Retrieves all broadcast logs from the database for export purposes.
+     *
+     * @return array An array of all log entries.
+     */
+    public function getAllLogs(): array
+    {
+        $sql = "SELECT message, status, created_at FROM sms_logs ORDER BY created_at DESC";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll();
+    }
 }
