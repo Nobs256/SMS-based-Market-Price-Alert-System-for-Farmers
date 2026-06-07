@@ -1,0 +1,45 @@
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Market Price Reports</h1>
+        <p class="text-muted">Emihendo y'emondi omu katale / Current Irish Potato Market Prices</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Market / Ekatale</th>
+                            <th>Price per Kg / Buri Kilo</th>
+                            <th>Price per Sack / Buli Gutiya</th>
+                            <th class="text-end pe-4">Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($allPrices as $price): ?>
+                        <tr>
+                            <td class="ps-4">
+                                <span class="fw-bold text-uppercase"><?= htmlspecialchars($price['market_name']) ?></span>
+                            </td>
+                            <td>
+                                <span class="text-success fw-semibold">UGX <?= number_format($price['price_per_kg']) ?></span>
+                            </td>
+                            <td>
+                                <span class="text-primary fw-semibold">UGX <?= number_format($price['price_per_sack']) ?></span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <span class="text-muted"><?= date('M d, Y', strtotime($price['price_date'])) ?></span>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 p-3 bg-light rounded text-center">
+        <p class="mb-0 text-muted"><i class="bi bi-info-circle me-2"></i>Registered farmers receive these prices via SMS daily in their preferred language.</p>
+    </div>
+</div>

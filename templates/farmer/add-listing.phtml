@@ -1,0 +1,58 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-0">
+                    <h3 class="fw-bold mb-0 text-success">List New Potato Stock</h3>
+                    <p class="text-muted small mb-0">Fill in the details below to sell your produce on the hub.</p>
+                </div>
+                <div class="card-body p-4">
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger"><?= $error ?></div>
+                    <?php endif; ?>
+
+                    <form action="add-listing.php" method="POST" enctype="multipart/form-data">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Potato Variety</label>
+                                <input type="text" name="variety" class="form-control" placeholder="e.g. Kinigi, Rwangume" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Location</label>
+                                <input type="text" name="location" class="form-control" placeholder="Village or Sub-county" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Quantity</label>
+                                <input type="number" step="0.01" name="quantity" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Unit</label>
+                                <select name="unit" class="form-select">
+                                    <option value="Sack">Sack (Gutiya)</option>
+                                    <option value="Kg">Kilogram (Kilo)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Price per Unit (UGX)</label>
+                                <input type="number" step="0.01" name="price" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Product Image (Optional)</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success py-2 fw-bold">Publish Listing</button>
+                            <a href="dashboard.php" class="btn btn-outline-secondary">Back to Dashboard</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

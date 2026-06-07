@@ -1,0 +1,73 @@
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h1 class="fw-bold text-success">Fresh Potato Marketplace</h1>
+            <p class="lead text-muted">Buy directly from Rubanda farmers at the best prices.</p>
+        </div>
+        <div class="col-md-4 text-md-end d-flex align-items-center justify-content-md-end">
+            <a href="<?= $siteUrl ?>/public/farmer/login.php" class="btn btn-success shadow-sm">
+                <i class="bi bi-plus-circle me-2"></i>Sell Your Produce
+            </a>
+        </div>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+            <form action="marketplace.php" method="GET" class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label small fw-bold">Potato Variety</label>
+                    <input type="text" name="variety" class="form-control" placeholder="e.g. Kinigi" value="<?= htmlspecialchars($_GET['variety'] ?? '') ?>">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label small fw-bold">Location</label>
+                    <input type="text" name="location" class="form-control" placeholder="e.g. Muko" value="<?= htmlspecialchars($_GET['location'] ?? '') ?>">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100 fw-bold">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <?php if (empty($listings)): ?>
+        <div class="text-center py-5">
+            <i class="bi bi-basket text-light" style="font-size: 4rem;"></i>
+            <h3 class="mt-3 text-muted">No potatoes listed for sale right now.</h3>
+            <p>Check back later or view the <a href="<?= $siteUrl ?>/public/prices.php">market prices</a>.</p>
+        </div>
+    <?php else: ?>
+        <div class="row g-4">
+            <?php foreach ($listings as $listing): ?>
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm border-0 transition-hover">
+                        <div class="position-relative">
+                            <img src="<?= $listing['image_path'] ? $siteUrl . '/public' . $listing['image_path'] : 'https://via.placeholder.com/400x300?text=Irish+Potatoes' ?>" 
+                                 class="card-img-top" alt="Potato Variety" style="height: 200px; object-fit: cover;">
+                            <span class="position-absolute top-0 end-0 m-2 badge bg-success fs-6">
+                                UGX <?= number_format($listing['price_per_unit']) ?> / <?= htmlspecialchars($listing['unit']) ?>
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-dark"><?= htmlspecialchars($listing['variety']) ?></h5>
+                            <div class="d-flex align-items-center mb-2 text-muted small">
+                                <i class="bi bi-geo-alt-fill me-1 text-danger"></i>
+                                <?= htmlspecialchars($listing['location']) ?>
+                            </div>
+                            <p class="card-text text-secondary mb-3">
+                                <strong>Stock:</strong> <?= number_format($listing['quantity_available']) ?> <?= htmlspecialchars($listing['unit']) ?>s available.
+                            </p>
+                            <div class="border-top pt-3 mt-auto">
+                                <p class="small text-muted mb-2">Sold by: <strong><?= htmlspecialchars($listing['farmer_name']) ?></strong></p>
+                                <div class="d-grid gap-2">
+                                    <a href="tel:<?= $listing['farmer_phone'] ?>" class="btn btn-outline-success fw-bold btn-sm">Call Farmer</a>
+                                    <a href="sms:<?= $listing['farmer_phone'] ?>" class="btn btn-outline-primary fw-bold btn-sm">Send SMS</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</div>

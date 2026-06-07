@@ -1,12 +1,77 @@
+<?php
+// Senior software engineer fix: dynamic base URL calculation for XAMPP/Subfolder support
+$projectRoot = \str_replace('\\', '/', \dirname(__DIR__, 2));
+$docRoot = \str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+$siteUrl = \str_ireplace($docRoot, '', $projectRoot);
+// Ensure it starts with a slash and has no trailing slash
+$siteUrl = '/' . trim($siteUrl, '/');
+if ($siteUrl === '/') $siteUrl = '';
+
+// Determine if this is an Admin Dashboard page (requires sidebar and original layout)
+$isAdminPath = \strpos($_SERVER['PHP_SELF'], '/admin/') !== false;
+$isLoginPage = \strpos($_SERVER['PHP_SELF'], 'login.php') !== false;
+$showAdminSidebar = $isAdminPath && !$isLoginPage;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - SMS Price Alerts</title>
+    <title><?= $pageTitle ?? ($showAdminSidebar ? 'Admin Dashboard - SMS Price Alerts' : 'Rubanda Potato Hub') ?></title>
+    
+    <!-- Global Styles -->
     <link rel="stylesheet" href="../assets/css/style.css?v=2">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root { --primary-green: #2e7d32; }
+        .bg-primary-green { background-color: var(--primary-green) !important; }
+        .text-success { color: var(--primary-green) !important; }
+        .btn-success { background-color: var(--primary-green); border-color: var(--primary-green); }
+        .transition-hover:hover { transform: translateY(-5px); transition: 0.3s; }
+        .navbar-brand { font-size: 1.5rem; }
+    </style>
 </head>
-<body>
+<body class="<?= !$showAdminSidebar ? 'bg-light' : '' ?>">
+
+    <?php if ($showAdminSidebar): ?>
     <div class="app-container">
         <?php require_once __DIR__ . '/sidebar.phtml'; ?>
         <main class="main-content">
+    <?php else: ?>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary-green sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="<?= $siteUrl ?>/index.php">
+                <i class="bi bi-incognito me-2"></i>PotatoHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="<?= $siteUrl ?>/index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= $siteUrl ?>/public/prices.php">Prices</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= $siteUrl ?>/public/marketplace.php">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= $siteUrl ?>/public/news.php">Farming Info</a></li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> Login
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><h6 class="dropdown-header">Access Panel</h6></li>
+                            <li><a class="dropdown-item" href="<?= $siteUrl ?>/public/farmer/login.php">Farmer Portal</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="<?= $siteUrl ?>/public/admin/login.php">Administrator</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="min-vh-100">
+    <?php endif; ?>

@@ -1,0 +1,137 @@
+<!-- Hero Section -->
+<section class="hero-section text-center py-5 mb-5 shadow-sm" style="background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=1500&q=80'); background-size: cover; background-position: center; color: white; min-height: 550px; display: flex; align-items: center; border-bottom: 5px solid var(--primary-green);">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h1 class="display-2 fw-bold mb-3" style="letter-spacing: -1px;">Connecting Rubanda Farmers <br><span class="text-success">To Global Markets</span></h1>
+                <p class="lead mb-5 fs-4 fw-light">Empowering the potato value chain with real-time price intelligence <br> and a seamless digital marketplace.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="<?= $siteUrl ?>/public/marketplace.php" class="btn btn-lg btn-success px-5 py-3 fw-bold rounded-pill shadow-lg transition-hover border-2">
+                        <i class="bi bi-bag-check me-2"></i>Explore Marketplace
+                    </a>
+                    <a href="<?= $siteUrl ?>/public/farmer/login.php" class="btn btn-lg btn-outline-light px-5 py-3 fw-bold rounded-pill shadow-lg transition-hover border-2">
+                        <i class="bi bi-shield-lock me-2"></i>Farmer Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5">
+    <div class="row g-5">
+        <!-- Latest Prices Preview -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 shadow border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary-green text-white border-0 py-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-bar-chart-fill me-2 text-warning"></i>Market Intelligence</h5>
+                    <span class="badge bg-white text-success rounded-pill px-3 py-2 fw-bold small shadow-sm">DAILY WATCH</span>
+                </div>
+                <div class="card-body px-4">
+                    <div class="list-group list-group-flush">
+                        <?php foreach($latestPrices as $price): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 transition-hover border-light">
+                            <div>
+                                <span class="fw-bold d-block text-dark mb-0 fs-6"><?= htmlspecialchars($price['market_name']) ?></span>
+                                <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar-event me-1"></i><?= date('D, M d Y', strtotime($price['price_date'])) ?></small>
+                            </div>
+                            <div class="text-end">
+                                <span class="text-success fw-bold fs-5 d-block">UGX <?= number_format($price['price_per_kg']) ?></span>
+                                <small class="text-muted" style="font-size: 0.7rem;">per Kilogram</small>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="mt-4">
+                        <a href="<?= $siteUrl ?>/public/prices.php" class="btn btn-outline-success w-100 rounded-pill py-2 fw-bold shadow-sm">
+                            All Market Reports <i class="bi bi-chevron-double-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- News & Guidelines -->
+        <div class="col-lg-8 mb-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-flex align-items-center">
+                    <div class="bg-success rounded-3 p-2 me-3 shadow-sm"><i class="bi bi-newspaper text-white fs-4"></i></div>
+                    <h2 class="fw-bold mb-0">Farming Insights</h2>
+                </div>
+                <a href="<?= $siteUrl ?>/public/news.php" class="btn btn-link text-success fw-bold text-decoration-none">Browse All <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div class="row">
+                <?php foreach($recentNews as $post): ?>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-hover border border-light">
+                        <div class="card-body p-4">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill mb-3 px-3 fw-semibold"><?= ucfirst($post['category']) ?></span>
+                            <h5 class="card-title fw-bold mb-3 text-dark" style="letter-spacing: -0.5px;"><?= htmlspecialchars($post['title']) ?></h5>
+                            <p class="card-text text-secondary mb-4" style="line-height: 1.6; font-size: 0.95rem;"><?= substr(strip_tags($post['content']), 0, 130) ?>...</p>
+                            <a href="<?= $siteUrl ?>/public/post-detail.php?id=<?= $post['id'] ?>" class="btn btn-link text-success p-0 fw-bold text-decoration-none">
+                                Read Full Article <i class="bi bi-chevron-right ms-1 small"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marketplace Preview -->
+    <section class="mt-5 pt-5">
+        <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-light">
+            <div>
+                <h2 class="fw-bold mb-1"><i class="bi bi-shop me-3 text-success"></i>Direct Farm Marketplace</h2>
+                <p class="text-muted fs-5 mb-0">Discover fresh harvests directly from verified Rubanda farmers.</p>
+            </div>
+            <a href="<?= $siteUrl ?>/public/marketplace.php" class="btn btn-success rounded-pill px-4 py-2 shadow-sm transition-hover fw-bold d-none d-md-inline-block border-2">
+                View Full Market <i class="bi bi-arrow-right-circle ms-2"></i>
+            </a>
+        </div>
+        <div class="row g-4">
+            <?php if(empty($featuredListings)): ?>
+                <div class="col-12 text-center py-5 bg-white shadow-sm rounded-4 border border-light">
+                    <i class="bi bi-patch-exclamation text-muted fs-1 mb-3 d-block"></i>
+                    <p class="text-muted fs-5 mb-0 fw-medium">Fresh stock arriving soon! Farmers are currently harvesting.</p>
+                </div>
+            <?php else: ?>
+                <?php foreach($featuredListings as $listing): ?>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card h-100 shadow border-0 transition-hover rounded-4 overflow-hidden bg-white">
+                        <div class="position-relative">
+                            <img src="<?= $listing['image_path'] ? $siteUrl . '/public' . $listing['image_path'] : 'https://via.placeholder.com/400x300?text=Irish+Potatoes' ?>" class="card-img-top" alt="Potato Variety" style="height: 230px; object-fit: cover;">
+                            <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+                                <span class="badge bg-success-subtle text-success border border-success-subtle shadow-sm px-3 py-2 fw-bold rounded-pill">
+                                    <?= htmlspecialchars($listing['unit']) ?>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="fw-bold text-dark mb-0 ls-tight"><?= htmlspecialchars($listing['variety']) ?></h5>
+                            </div>
+                            <div class="h3 fw-bold text-success mb-4">UGX <?= number_format($listing['price_per_unit']) ?></div>
+                            
+                            <div class="bg-light rounded-3 p-3 mb-4">
+                                <div class="small mb-2 d-flex align-items-center fw-medium"><i class="bi bi-geo-alt-fill text-danger me-2"></i><span class="text-dark"><?= htmlspecialchars($listing['location']) ?></span></div>
+                                <div class="small d-flex align-items-center fw-medium"><i class="bi bi-person-circle text-primary me-2"></i><span class="text-dark"><?= htmlspecialchars($listing['farmer_name']) ?></span></div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a href="tel:<?= $listing['farmer_phone'] ?>" class="btn btn-success fw-bold py-2 rounded-3 shadow-sm transition-hover">
+                                    <i class="bi bi-telephone-plus me-2"></i>Call Seller
+                                </a>
+                                <a href="sms:<?= $listing['farmer_phone'] ?>" class="btn btn-outline-success fw-bold py-2 rounded-3 transition-hover border-2">
+                                    <i class="bi bi-chat-left-text me-2"></i>Inquire
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </section>
+</div>
